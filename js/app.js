@@ -1,3 +1,14 @@
+let deck = ["fa-cat","fa-horse-head", "fa-dog", "fa-dove", "fa-dragon", "fa-hippo", "fa-frog", "fa-spider",
+            "fa-cat","fa-horse-head", "fa-dog", "fa-dove", "fa-dragon", "fa-hippo", "fa-frog", "fa-spider"];
+
+let openCards = [];
+
+function displayCards() {
+  shuffle(deck).forEach(function(card) {
+    $('.deck').append(`<li class="card"><i class="fas ${card}"></i></li>`);
+  });
+}
+
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
 
@@ -12,35 +23,42 @@ function shuffle(array) {
   return array;
 }
 
-function displayCard(card) {
-  card.classList.toggle('show');
+function openCard(card) {
+
+  card.classList.add('open');
+  card.classList.add('show');
+  openCards.push(card);
+
+  checkOpenCards(openCards);
 }
 
-$(function(){
-  let deck = [];
-  deck.push($("<li class='card'></li>").append("<i class='fas fa-cat'></i>"));
-  deck.push($("<li class='card'></li>").append("<i class='fas fa-horse-head'></i>"));
-  deck.push($("<li class='card'></li>").append("<i class='fas fa-dog'></i>"));
-  deck.push($("<li class='card'></li>").append("<i class='fas fa-dove'></i>"));
-  deck.push($("<li class='card'></li>").append("<i class='fas fa-dragon'></i>"));
-  deck.push($("<li class='card'></li>").append("<i class='fas fa-hippo'></i>"));
-  deck.push($("<li class='card'></li>").append("<i class='fas fa-frog'></i>"));
-  deck.push($("<li class='card'></li>").append("<i class='fas fa-spider'></i>"));
+function checkOpenCards(){
+  if (openCards.length === 2){
+    if (openCards[0].firstChild.className === openCards[1].firstChild.className) {
+      openCards[0].classList.add("match");
+      openCards[1].classList.add("match");
+      openCards = [];
+    } else {
+      $('.card').addClass('disableClick');
+      setTimeout(function() {
+        $('.card').removeClass('disableClick');
+        openCards.forEach(function(evt) {
+          evt.classList.remove("open");
+          evt.classList.remove("show");
+          openCards = [];
+        });
+      }, 1000);
+    }
+  }
+}
 
-  deck.push($("<li class='card'></li>").append("<i class='fas fa-dog'></i>"));
-  deck.push($("<li class='card'></li>").append("<i class='fas fa-cat'></i>"));
-  deck.push($("<li class='card'></li>").append("<i class='fas fa-horse-head'></i>"));
-  deck.push($("<li class='card'></li>").append("<i class='fas fa-dove'></i>"));
-  deck.push($("<li class='card'></li>").append("<i class='fas fa-dragon'></i>"));
-  deck.push($("<li class='card'></li>").append("<i class='fas fa-hippo'></i>"));
-  deck.push($("<li class='card'></li>").append("<i class='fas fa-frog'></i>"));
-  deck.push($("<li class='card'></li>").append("<i class='fas fa-spider'></i>"));
+$(function start(){
 
-  $('.board').click('li', function(e) {
-    displayCard(e.target);
+  displayCards();
+
+  $('.deck').click('.card', function(event) {
+    openCard(event.target, openCards);
   });
-
-  $('.board').append(shuffle(deck));
 
 });
 

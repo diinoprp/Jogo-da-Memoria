@@ -32,7 +32,12 @@ h1 {
     font-family: 'Open Sans', sans-serif;
     font-weight: 300;
 }
-.board  {
+
+/*
+ * Styles for the deck of cards
+ */
+
+.deck {
     width: 660px;
     min-height: 680px;
     background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
@@ -43,10 +48,10 @@ h1 {
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    margin: 3em 0 3em;
+    margin: 0 0 3em;
 }
 
-.board .card {
+.deck .card {
     height: 125px;
     width: 125px;
     background: #2e3d49;
@@ -60,18 +65,51 @@ h1 {
     box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
 }
 
-.board .card.open {
+.deck .card.open {
     transform: rotateY(0);
     background: #02b3e4;
     cursor: default;
+    transform: rotateY(200deg);
 }
 
-.board .card.show {
+.deck .card.show {
     font-size: 33px;
 }
 
-.dboardeck .card.match {
+.deck .card.match {
     cursor: default;
     background: #02ccba;
     font-size: 33px;
+}
+
+/*
+ * Styles for the Score Panel
+ */
+
+.score-panel {
+    text-align: left;
+    width: 345px;
+    margin-bottom: 10px;
+}
+
+.score-panel .stars {
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    margin: 0 5px 0 0;
+}
+
+.score-panel .stars li {
+    list-style: none;
+    display: inline-block;
+}
+
+.score-panel .restart {
+    float: right;
+    cursor: pointer;
+}
+
+
+.disableClick {
+    pointer-events: none;
 }
