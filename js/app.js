@@ -2,6 +2,7 @@ let deck = ["fa-cat","fa-horse-head", "fa-dog", "fa-dove", "fa-dragon", "fa-hipp
             "fa-cat","fa-horse-head", "fa-dog", "fa-dove", "fa-dragon", "fa-hippo", "fa-frog", "fa-spider"];
 
 let openCards = [];
+let moves = 0;
 
 function displayCards() {
   shuffle(deck).forEach(function(card) {
@@ -30,30 +31,57 @@ function openCard(card) {
   openCards.push(card);
 
   checkOpenCards(openCards);
+
 }
 
 function checkOpenCards(){
   if (openCards.length === 2){
     if (openCards[0].firstChild.className === openCards[1].firstChild.className) {
-      openCards[0].classList.add("match");
-      openCards[1].classList.add("match");
+
+      openCards.forEach(function(openCard){
+        openCard.classList.add("match");
+      });
+
       openCards = [];
+
     } else {
       $('.card').addClass('disableClick');
+
       setTimeout(function() {
         $('.card').removeClass('disableClick');
-        openCards.forEach(function(evt) {
-          evt.classList.remove("open");
-          evt.classList.remove("show");
-          openCards = [];
+
+        openCards.forEach(function(openCard) {
+          openCard.classList.remove("open");
+          openCard.classList.remove("show");
         });
-      }, 1000);
+
+        openCards = [];
+
+      }, 700);
+      increaseMovesCount();
     }
+  }
+  showMovesCount();
+}
+
+function showStars() {
+  let maxStarCount = 5;
+
+  for (let i = 0; i < maxStarCount; i++) {
+    $('.stars').append("<li><i class='fas fa-star'></i></li>");
   }
 }
 
-$(function start(){
+function showMovesCount() {
+  $('.moves').text(moves);
+}
 
+function increaseMovesCount(){
+  moves ++;
+}
+
+$(function start(){
+  showStars();
   displayCards();
 
   $('.deck').click('.card', function(event) {
