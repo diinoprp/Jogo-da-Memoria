@@ -2,7 +2,7 @@ let deck = ["fa-cat","fa-horse-head", "fa-dog", "fa-dove", "fa-dragon", "fa-hipp
             "fa-cat","fa-horse-head", "fa-dog", "fa-dove", "fa-dragon", "fa-hippo", "fa-frog", "fa-spider"];
 
 let openCards = [];
-let moves = 0, starScore = 5;
+let moves = 0;
 
 function displayCards() {
   shuffle(deck).forEach(function(card) {
@@ -83,31 +83,18 @@ function increaseMovesCount(){
 
 function updateStarScore() {
   let starsArray = $('.stars').children().toArray();
-  
-  if (moves > 10) {
-    starsArray[0].classList.add('disabled');
-    starScore --;
-  } else if (moves > 9) {
-    starsArray[1].classList.add('disabled');
-    starScore --;
-  } else if (moves > 7) {
-    starsArray[2].classList.add('disabled');
-    starScore --;
-  } else if (moves > 5) {
-    starsArray[3].classList.add('disabled');
-    starScore --;
-  } else if (moves > 3) {
-    starsArray[4].classList.add('disabled');
-    starScore --;
-  }
 
-  checkGameOver();
+  switch (moves) {
+    case 12: starsArray[0].classList.add('disabled'); gameOver();
+    case 10: starsArray[1].classList.add('disabled');
+    case  8: starsArray[2].classList.add('disabled');
+    case  5: starsArray[3].classList.add('disabled');
+    case  3: starsArray[4].classList.add('disabled');
+  }
 }
 
-function checkGameOver() {
-  if (starScore <= 0) {
-    console.log("Game Over!");
-  }
+function gameOver() {
+  console.log('game over!');
 }
 
 $(function start(){
