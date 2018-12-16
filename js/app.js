@@ -1,11 +1,9 @@
-let deck = ["fa-cat","fa-horse-head", "fa-dog", "fa-dove", "fa-dragon", "fa-hippo", "fa-frog", "fa-spider",
-            "fa-cat","fa-horse-head", "fa-dog", "fa-dove", "fa-dragon", "fa-hippo", "fa-frog", "fa-spider"];
-
-let openCards = [];
-let moves = 0;
-let matches = 0;
-let minutes = 0, seconds = 0;
-let timer = new easytimer.Timer();
+let deck;
+let openCards;
+let moves;
+let matches;
+let minutes, seconds;
+let timer;
 
 function displayCards() {
   shuffle(deck).forEach(function(card) {
@@ -88,44 +86,48 @@ function updateStarScore() {
   let starsArray = $('.stars').children().toArray();
 
   switch (moves) {
-    case 12: starsArray[0].classList.add('disabled');
-    case 10: starsArray[1].classList.add('disabled');
-    case  8: starsArray[2].classList.add('disabled');
-    case  5: starsArray[3].classList.add('disabled');
-    case  3: starsArray[4].classList.add('disabled');
+    case 21: starsArray[0].classList.add('disabled');
+    case 17: starsArray[1].classList.add('disabled');
+    case 13: starsArray[2].classList.add('disabled');
+    case  9: starsArray[3].classList.add('disabled');
+    case  5: starsArray[4].classList.add('disabled');
   }
 
   checkGameOver();
 }
 
 function checkGameOver() {
-  if (moves >= 12) {
-    gameOver();
+  if (moves >= 21) {
+    gameOver(false);
   } else if (matches === (deck.length/2)) {
-    victory();
+    gameOver(true);
   }
 }
 
-function victory(){
-  let score, time, title, moves, starsList, star;
+function gameOver(win){
+  let score, starsList, star;
+
+  $('.score-time').html($('.timer').html());
+
   score = $('#main-score-stars').children().not('.disabled').toArray();
   console.log(score.length);
   star = "<li><i class='fas fa-star'></i></li>";
   starsList = $('#modal-score').empty();
-  
-  time = $('.timer').html();
-  console.log(starsList);
-  console.log(time);
   score.forEach(function(){
     starsList.append(star);
   });
 
-  $('score-modal').append(starsList);
-  $('#resultModal').modal('show');
-}
+  if (win) {
+    $('#score-title').html('Vitória!');
+  } else {
+    $('#score-title').html('Derrota!');
+  }
 
-function gameOver() {
-  $('#resultModal').modal('show');
+
+  $('.score-moves').html(moves);
+
+  $('score-modal').append(starsList);
+  showModal();
 }
 
 function startTimer() {
@@ -135,13 +137,34 @@ function startTimer() {
   });
 }
 
-$(function start(){
-  showStars();
-  displayCards();
-  startTimer(Date.now());
+function showModal() {
+  $('.modal').css('display', 'flex');
+}
+
+function hideModal() {
+  $('.modal').css('display', 'none');
+}
+
+$(function startGame(){
+  $('#close-modal').click(function (){
+    hideModal();
+    startGame(location.reload());
+  });
+
   $('.deck').click('.card', function(event) {
     openCard(event.target, openCards);
   });
 
+  deck = ["fa-cat","fa-horse-head", "fa-dog", "fa-dove", "fa-dragon", "fa-hippo", "fa-frog", "fa-spider"];
+  deck = [...deck, ...deck];
+  openCards = [];
+  moves = 0;
+  matches = 0;
+  minutes = 0, seconds = 0;
+  timer = new easytimer.Timer();
+
+  showStars();
+  displayCards();
+  startTimer(Date.now());
 });
 
