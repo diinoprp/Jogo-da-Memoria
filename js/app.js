@@ -146,7 +146,7 @@ function hideModal() {
 }
 
 $(function startGame(){
-  $('#close-modal').click(function (){
+  $('.restart').click(function (){
     hideModal();
     startGame(location.reload());
   });
