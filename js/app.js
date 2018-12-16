@@ -3,6 +3,7 @@ let deck = ["fa-cat","fa-horse-head", "fa-dog", "fa-dove", "fa-dragon", "fa-hipp
 
 let openCards = [];
 let moves = 0;
+let matches = 0;
 
 function displayCards() {
   shuffle(deck).forEach(function(card) {
@@ -41,7 +42,7 @@ function checkOpenCards(){
       openCards.forEach(function(openCard){
         openCard.classList.add("match");
       });
-
+      matches ++;
       openCards = [];
 
     } else {
@@ -61,6 +62,7 @@ function checkOpenCards(){
       increaseMovesCount();
     }
   }
+  updateStarScore();
   showMovesCount();
 }
 
@@ -78,23 +80,30 @@ function showMovesCount() {
 
 function increaseMovesCount(){
   moves ++;
-  updateStarScore();
 }
 
 function updateStarScore() {
   let starsArray = $('.stars').children().toArray();
 
   switch (moves) {
-    case 12: starsArray[0].classList.add('disabled'); gameOver();
+    case 12: starsArray[0].classList.add('disabled');
     case 10: starsArray[1].classList.add('disabled');
     case  8: starsArray[2].classList.add('disabled');
     case  5: starsArray[3].classList.add('disabled');
     case  3: starsArray[4].classList.add('disabled');
   }
+
+  checkGameOver();
 }
 
-function gameOver() {
-  console.log('game over!');
+function checkGameOver() {
+  if (moves >= 12) {
+    $('#loseModal').modal('show');
+    console.log('perdeu');
+  } else if (matches === (deck.length/2)) {
+    console.log('venceu');
+    $('#winModal').modal('show');
+  }
 }
 
 $(function start(){
