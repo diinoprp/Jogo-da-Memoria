@@ -98,12 +98,16 @@ h1 {
     padding: 0;
     display: inline-block;
     margin: 0 5px 0 0;
-    color: gold;
+}
+
+.score-panel .stars li.disabled {
+    color: darkgray !important;
 }
 
 .score-panel .stars li {
     list-style: none;
     display: inline-block;
+    color: gold;
 }
 
 .score-panel .restart {
