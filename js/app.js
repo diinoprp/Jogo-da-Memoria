@@ -4,6 +4,8 @@ let deck = ["fa-cat","fa-horse-head", "fa-dog", "fa-dove", "fa-dragon", "fa-hipp
 let openCards = [];
 let moves = 0;
 let matches = 0;
+let minutes = 0, seconds = 0;
+let timer = new easytimer.Timer();
 
 function displayCards() {
   shuffle(deck).forEach(function(card) {
@@ -70,7 +72,7 @@ function showStars() {
   let maxStarScore = 5;
 
   for (let i = 0; i < maxStarScore; i++) {
-    $('.stars').append("<li><i class='fas fa-star'></i></li>");
+    $('#main-score-stars').append("<li><i class='fas fa-star'></i></li>");
   }
 }
 
@@ -98,18 +100,45 @@ function updateStarScore() {
 
 function checkGameOver() {
   if (moves >= 12) {
-    $('#loseModal').modal('show');
-    console.log('perdeu');
+    gameOver();
   } else if (matches === (deck.length/2)) {
-    console.log('venceu');
-    $('#winModal').modal('show');
+    victory();
   }
+}
+
+function victory(){
+  let score, time, title, moves, starsList, star;
+  score = $('#main-score-stars').children().not('.disabled').toArray();
+  console.log(score.length);
+  star = "<li><i class='fas fa-star'></i></li>";
+  starsList = $('#modal-score').empty();
+  
+  time = $('.timer').html();
+  console.log(starsList);
+  console.log(time);
+  score.forEach(function(){
+    starsList.append(star);
+  });
+
+  $('score-modal').append(starsList);
+  $('#resultModal').modal('show');
+}
+
+function gameOver() {
+  $('#resultModal').modal('show');
+}
+
+function startTimer() {
+  timer.start();
+  timer.addEventListener('secondsUpdated', function (e) {
+    $('.timer').html(timer.getTimeValues().toString(['minutes','seconds']));
+  });
 }
 
 $(function start(){
   showStars();
   displayCards();
-
+  startTimer(Date.now());
   $('.deck').click('.card', function(event) {
     openCard(event.target, openCards);
   });

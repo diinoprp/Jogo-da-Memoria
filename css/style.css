@@ -97,7 +97,7 @@ h1 {
     margin: 0;
     padding: 0;
     display: inline-block;
-    margin: 0 5px 0 0;
+    margin-right: 10px;
 }
 
 .score-panel .stars li.disabled {
@@ -115,8 +115,10 @@ h1 {
     cursor: pointer;
 }
 
+#lbMovimentos { margin-right: 10px;}
+
+.timer {margin-right: 10px;}
 
 .disableClick {
     pointer-events: none;
 }
-
